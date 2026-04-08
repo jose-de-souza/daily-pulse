@@ -39,7 +39,7 @@ fun App() {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                ArticlesScreen()
+                AppScaffold()
             }
 
         }

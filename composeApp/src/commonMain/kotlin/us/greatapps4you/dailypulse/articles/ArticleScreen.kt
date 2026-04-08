@@ -12,6 +12,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import org.jetbrains.compose.resources.vectorResource
+import dailypulse.composeapp.generated.resources.Res
+import dailypulse.composeapp.generated.resources.ic_info_outlined
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -30,13 +35,14 @@ import coil3.compose.AsyncImage
 
 @Composable
 fun ArticlesScreen(
+    onAboutButtonClick: () -> Unit,
     // The viewModel() function handles the factory and retention
     articlesViewModel: ArticlesViewModel = viewModel { ArticlesViewModel() }
 ) {
     val articlesState: ArticlesState by articlesViewModel.articlesState.collectAsStateWithLifecycle()
 
     Column {
-        AppBar()
+        AppBar(onAboutButtonClick)
         if(articlesState.loading)
             Loader()
 
@@ -51,8 +57,18 @@ fun ArticlesScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppBar() {
-    TopAppBar( title = { Text(text = "Articles") })
+fun AppBar(onAboutButtonClick: () -> Unit) {
+    TopAppBar(
+        title = { Text(text = "Articles") },
+        actions = {
+            IconButton(onClick = onAboutButtonClick) {
+                Icon(
+                    imageVector = vectorResource(Res.drawable.ic_info_outlined),
+                    contentDescription = "About Device"
+                )
+            }
+        }
+    )
 }
 
 @Composable
