@@ -31,6 +31,12 @@ kotlin {
             implementation(libs.androidx.activity.compose)
         }
         commonMain.dependencies {
+            // The core Koin DI engine
+            implementation(libs.koin.core)
+            // Koin integration for Compose Multiplatform
+            implementation(libs.koin.compose)
+            // Crucial: Koin's native support for KMP ViewModels!
+            implementation(libs.koin.compose.viewmodel)
             implementation(libs.kotlinx.datetime)
             implementation(libs.navigation.compose)
             implementation(libs.ktor.client.cio)

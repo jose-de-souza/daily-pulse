@@ -12,9 +12,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import org.jetbrains.compose.resources.vectorResource
-import dailypulse.composeapp.generated.resources.Res
-import dailypulse.composeapp.generated.resources.ic_info_outlined
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -30,14 +27,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
+import dailypulse.composeapp.generated.resources.Res
+import dailypulse.composeapp.generated.resources.ic_info_outlined
+import org.jetbrains.compose.resources.vectorResource
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun ArticlesScreen(
     onAboutButtonClick: () -> Unit,
-    // The viewModel() function handles the factory and retention
-    articlesViewModel: ArticlesViewModel = viewModel { ArticlesViewModel() }
+    articlesViewModel: ArticlesViewModel = koinViewModel()
 ) {
     val articlesState: ArticlesState by articlesViewModel.articlesState.collectAsStateWithLifecycle()
 
