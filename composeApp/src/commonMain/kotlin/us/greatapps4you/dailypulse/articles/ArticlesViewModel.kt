@@ -21,13 +21,13 @@ class ArticlesViewModel(
         getArticles()
     }
 
-    private fun getArticles() {
+    fun getArticles(forceFetch: Boolean = false) {
         viewModelScope.launch {
             // Ensure we are in a loading state before starting (useful for pull-to-refresh later)
             _articlesState.emit(ArticlesState(loading = true, articles = _articlesState.value.articles))
 
             try {
-                val fetchedArticles = useCase.getArticles()
+                val fetchedArticles = useCase.getArticles(forceFetch)
 
                 // Success: Turn off loading, pass the data, clear any previous errors
                 _articlesState.emit(

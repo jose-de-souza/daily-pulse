@@ -17,6 +17,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -42,15 +43,24 @@ fun ArticlesScreen(
 
     Column {
         AppBar(onAboutButtonClick)
-        if(articlesState.loading)
-            Loader()
 
-        if(articlesState.error != null)
-            ErrorMessage(articlesState.error.toString())
+        PullToRefreshBox(
+            isRefreshing = articlesState.loading,
+            onRefresh = {
+                articlesViewModel.getArticles(forceFetch = true)
+            },
+            modifier = Modifier.fillMaxSize()
+        ) {
+            if(articlesState.loading && articlesState.articles.isEmpty())
+                Loader()
 
-        if(articlesState.articles.isNotEmpty())
-            ArticlesListView(articlesState.articles)
+            if(articlesState.error != null)
+                ErrorMessage(articlesState.error.toString())
 
+            if(articlesState.articles.isNotEmpty())
+                ArticlesListView(articlesState.articles)
+
+        }
     }
 }
 
