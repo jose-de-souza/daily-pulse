@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.buildkonfig)
+    alias(libs.plugins.sqldelight)
 }
 
 kotlin {
@@ -32,13 +33,16 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.sqldelight.android)
         }
+
+        iosMain.dependencies {
+            implementation(libs.sqldelight.native)
+        }
+
         commonMain.dependencies {
-            // The core Koin DI engine
             implementation(libs.koin.core)
-            // Koin integration for Compose Multiplatform
             implementation(libs.koin.compose)
-            // Crucial: Koin's native support for KMP ViewModels!
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.kotlinx.datetime)
             implementation(libs.navigation.compose)
@@ -56,6 +60,7 @@ kotlin {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+            implementation(libs.sqldelight.coroutines)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -79,6 +84,7 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
@@ -94,8 +100,6 @@ dependencies {
     debugImplementation(libs.compose.uiTooling)
 }
 
-
-// This block tells BuildKonfig how to generate your secret variables
 buildkonfig {
     // The package name where the generated file will live
     packageName = "us.greatapps4you.dailypulse"
@@ -115,6 +119,14 @@ buildkonfig {
             "NEWS_API_KEY",
             localProperties.getProperty("NEWS_API_KEY") ?: "MissingApiKey"
         )
+    }
+}
+
+sqldelight {
+    databases {
+        create("DailyPulseDatabase") {
+            packageName.set("us.greatapps4you.dailypulse.db")
+        }
     }
 }
 

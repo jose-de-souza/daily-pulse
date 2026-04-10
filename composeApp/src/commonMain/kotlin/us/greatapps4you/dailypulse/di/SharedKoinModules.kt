@@ -6,10 +6,11 @@ import us.greatapps4you.dailypulse.articles.di.articlesModule
 
 val sharedKoinModules = listOf(
     articlesModule,
-    networkModule
+    networkModule,
+    databaseModule,
+    platformModule
 )
 
-// Call this from the platforms to start the Koin engine
 fun initKoin(config: KoinAppDeclaration? = null) {
     startKoin {
         config?.invoke(this)

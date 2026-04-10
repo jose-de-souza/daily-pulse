@@ -7,7 +7,7 @@ import kotlinx.datetime.todayIn
 import kotlin.time.Clock
 import kotlin.time.Instant
 import kotlin.math.abs
-class ArticlesUseCase(private val service: ArticlesService) {
+class ArticlesUseCase(private val repo: ArticlesRepository) {
     private fun mapArticles(articlesRaw: List<ArticleRaw>): List<Article> = articlesRaw.map { raw ->
         Article (
             raw.title,
@@ -18,7 +18,7 @@ class ArticlesUseCase(private val service: ArticlesService) {
     }
 
     suspend fun getArticles(): List<Article> {
-        val articlesRaw = service.fetchArticles()
+        val articlesRaw = repo.getArticles()
         return mapArticles(articlesRaw)
     }
 
