@@ -1,4 +1,6 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
+import java.io.FileInputStream
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -6,6 +8,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.buildkonfig)
 }
 
 kotlin {
@@ -14,7 +17,7 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_21)
         }
     }
-    
+
     listOf(
         iosArm64(),
         iosSimulatorArm64()
@@ -24,7 +27,7 @@ kotlin {
             isStatic = true
         }
     }
-    
+
     sourceSets {
         androidMain.dependencies {
             implementation(libs.compose.uiToolingPreview)
@@ -89,5 +92,29 @@ android {
 
 dependencies {
     debugImplementation(libs.compose.uiTooling)
+}
+
+
+// This block tells BuildKonfig how to generate your secret variables
+buildkonfig {
+    // The package name where the generated file will live
+    packageName = "us.greatapps4you.dailypulse"
+
+    // Load the local.properties file safely
+    val localProperties = Properties().apply {
+        val propsFile = rootProject.file("local.properties")
+        if (propsFile.exists()) {
+            load(FileInputStream(propsFile))
+        }
+    }
+
+    // Generate the variables!
+    defaultConfigs {
+        buildConfigField(
+            com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING,
+            "NEWS_API_KEY",
+            localProperties.getProperty("NEWS_API_KEY") ?: "MissingApiKey"
+        )
+    }
 }
 
