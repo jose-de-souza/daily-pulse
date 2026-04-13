@@ -32,4 +32,14 @@ in your IDE’s toolbar or open the [/iosApp](./iosApp) directory in Xcode and r
 
 ---
 
+### Trouble shooting
+
+Some times the cache will cause undesirable side 
+effects like not seeing a new resource for example.
+In order to nuke the cache do this:
+
+```bash 
+./gradlew clean composeApp:assembleDebug --no-configuration-cache --no-build-cache
+```
+
 Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
